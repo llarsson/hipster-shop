@@ -61,10 +61,8 @@ spec:
         ports:
           - containerPort: 8888
         env:
-        - name: PROXY_UPSTREAM_PORT
-          value: "8080"
-        - name: PROXY_UPSTREAM_HOST
-          value: "localhost"
+        - name: EMAIL_SERVICE_ADDR
+          value: "localhost:8080"
         - name: PROXY_LISTEN_PORT
           value: "8888"
         - name: PROXY_MAX_AGE
@@ -136,10 +134,8 @@ spec:
           ports:
             - containerPort: 8888
           env:
-          - name: PROXY_UPSTREAM_PORT
-            value: "5050"
-          - name: PROXY_UPSTREAM_HOST
-            value: "localhost"
+          - name: CHECKOUT_SERVICE_ADDR
+            value: "localhost:5050"
           - name: PROXY_LISTEN_PORT
             value: "8888"
           - name: PROXY_MAX_AGE
@@ -223,10 +219,8 @@ spec:
         ports:
           - containerPort: 8888
         env:
-        - name: PROXY_UPSTREAM_PORT
-          value: "8080"
-        - name: PROXY_UPSTREAM_HOST
-          value: "localhost"
+        - name: RECOMMENDATION_SERVICE_ADDR
+          value: "localhost:8080"
         - name: PROXY_LISTEN_PORT
           value: "8888"
         - name: PROXY_MAX_AGE
@@ -403,10 +397,8 @@ spec:
         ports:
           - containerPort: 8888
         env:
-        - name: PROXY_UPSTREAM_PORT
-          value: "50051"
-        - name: PROXY_UPSTREAM_HOST
-          value: "localhost"
+        - name: PAYMENT_SERVICE_ADDR
+          value: "localhost:50051"
         - name: PROXY_LISTEN_PORT
           value: "8888"
         - name: PROXY_MAX_AGE
@@ -468,10 +460,8 @@ spec:
         ports:
           - containerPort: 8888
         env:
-        - name: PROXY_UPSTREAM_PORT
-          value: "3550"
-        - name: PROXY_UPSTREAM_HOST
-          value: "localhost"
+        - name: PRODUCT_CATALOG_SERVICE_ADDR
+          value: "localhost:3550"
         - name: PROXY_LISTEN_PORT
           value: "8888"
         - name: PROXY_MAX_AGE
@@ -537,10 +527,8 @@ spec:
         ports:
           - containerPort: 8888
         env:
-        - name: PROXY_UPSTREAM_PORT
-          value: "7070"
-        - name: PROXY_UPSTREAM_HOST
-          value: "localhost"
+        - name: CART_SERVICE_ADDR
+          value: "localhost:7070"
         - name: PROXY_LISTEN_PORT
           value: "8888"
         - name: PROXY_MAX_AGE
@@ -643,10 +631,8 @@ spec:
         ports:
           - containerPort: 8888
         env:
-        - name: PROXY_UPSTREAM_PORT
-          value: "7000"
-        - name: PROXY_UPSTREAM_HOST
-          value: "localhost"
+        - name: CURRENCY_SERVICE_ADDR
+          value: "localhost:7000"
         - name: PROXY_LISTEN_PORT
           value: "8888"
         - name: PROXY_MAX_AGE
@@ -708,10 +694,8 @@ spec:
         ports:
           - containerPort: 8888
         env:
-        - name: PROXY_UPSTREAM_PORT
-          value: "50051"
-        - name: PROXY_UPSTREAM_HOST
-          value: "localhost"
+        - name: SHIPPING_SERVICE_ADDR
+          value: "localhost:50051"
         - name: PROXY_LISTEN_PORT
           value: "8888"
         - name: PROXY_MAX_AGE
@@ -829,10 +813,8 @@ spec:
         ports:
           - containerPort: 8888
         env:
-        - name: PROXY_UPSTREAM_PORT
-          value: "9555"
-        - name: PROXY_UPSTREAM_HOST
-          value: "localhost"
+        - name: AD_SERVICE_ADDR
+          value: "localhost:9555"
         - name: PROXY_LISTEN_PORT
           value: "8888"
         - name: PROXY_MAX_AGE
