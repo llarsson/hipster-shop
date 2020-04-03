@@ -24,8 +24,9 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
         sleep 2
     done
 
-    start=$(TZ=GMT date +"%Y%m%d%H%M%S")
+    start=$(date +"%s")
     echo "Starting experiment at ${start} in UTC epoch time"
+    echo "start ${start}" > results/${experiment}-times.txt
 
     echo "Sleeping a minute to not miss load ramp-up period..."
     sleep 60
@@ -43,8 +44,9 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
     echo "Sleeping for an additional minute to not miss ramp-down period..."
     sleep 60
 
-    end=$(TZ=GMT date +"%Y%m%d%H%M%S")
+    end=$(date +"%s")
     echo "Experiment ended at ${end} in UTC epoch time"
+    echo "end ${end}" >> results/${experiment}-times.txt
 
     echo "Storing cache CSV files for the components with caching enabled"
     for component in frontend recommendation checkout; do
