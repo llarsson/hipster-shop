@@ -39,7 +39,6 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
 
     echo "Removing load generator"
     kubectl delete -f ../release/loadgenerator.yaml
-    kubectl wait -f ../release/loadgenerator.yaml --for=delete
 
     echo "Sleeping for an additional minute to not miss ramp-down period..."
     sleep 60
@@ -55,7 +54,6 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
 
     echo "Removing Hipster Shop"
     kubectl delete -f ../release/kubernetes-manifests-${experiment}.yaml
-    kubectl wait -f ../release/kubernetes-manifests-${experiment}.yaml --for=delete
 
     echo "Storing time series data in files"
     ./query_csv.py http://localhost:9090 ${experiment}_received_bytes \
