@@ -34,8 +34,12 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
     echo "Deploying load generator"
     kubectl apply -f ../release/loadgenerator.yaml
 
+    date
     echo "Sleeping for ${duration} seconds"
     sleep ${duration}
+
+    echo "Actually done, saving load generator logs before removing it..."
+    kubectl logs $(kubectl get pods | grep loadgenerator) > results/${experiment}-loadgenerator.log
 
     echo "Removing load generator"
     kubectl delete -f ../release/loadgenerator.yaml
@@ -51,6 +55,9 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
     for component in frontend recommendation checkout; do
         kubectl exec $(kubectl get pods | grep ${component} | cut -d ' ' -f 1) -c caching-grpc-reverse-proxy cat data.csv > results/${experiment}-${component}-caching.csv
     done
+
+    echo "Sleeping for 20 seconds"
+    sleep 20
 
     echo "Removing Hipster Shop"
     kubectl delete -f ../release/kubernetes-manifests-${experiment}.yaml
