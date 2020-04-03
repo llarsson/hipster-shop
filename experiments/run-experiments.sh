@@ -41,6 +41,9 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
     echo "Actually done, saving load generator logs before removing it..."
     kubectl logs $(kubectl get pods | grep loadgenerator | cut -d ' ' -f 1) > results/${experiment}-loadgenerator.log
 
+    echo "Storing Pod status"
+    kubectl get pods > results/${experiment}-podstatus.log
+
     echo "Removing load generator"
     kubectl delete -f ../release/loadgenerator.yaml
 
