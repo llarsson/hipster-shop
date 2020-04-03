@@ -46,6 +46,11 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
     end=$(TZ=GMT date +"%Y%m%d%H%M%S")
     echo "Experiment ended at ${end} in UTC epoch time"
 
+    echo "Storing cache CSV files for the components with caching enabled"
+    for component in frontend recommendation checkout; do
+        kubectl exec $(kubectl get pods | grep ${component} | cut -d ' ' -f 1) -c caching-grpc-reverse-proxy cat data.csv > results/${experiment}-${component}-caching.csv
+    done
+
     echo "Removing Hipster Shop"
     kubectl delete -f ../release/kubernetes-manifests-${experiment}.yaml
     kubectl wait -f ../release/kubernetes-manifests-${experiment}.yaml --for=delete
