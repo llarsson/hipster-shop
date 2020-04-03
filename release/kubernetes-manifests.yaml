@@ -56,17 +56,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-      - name: cache-estimator
-        image: larsson/grpc-caching-estimator
-        ports:
-          - containerPort: 8888
-        env:
-        - name: EMAIL_SERVICE_ADDR
-          value: "localhost:8080"
-        - name: PROXY_LISTEN_PORT
-          value: "8888"
-        - name: PROXY_MAX_AGE
-          value: "60"
 ---
 apiVersion: v1
 kind: Service
@@ -79,7 +68,7 @@ spec:
   ports:
   - name: grpc
     port: 5000
-    targetPort: 8888
+    targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -109,45 +98,6 @@ spec:
           - name: PORT
             value: "5050"
           - name: PRODUCT_CATALOG_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: SHIPPING_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: PAYMENT_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: EMAIL_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: CURRENCY_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: CART_SERVICE_ADDR
-            value: "localhost:1234"
-          # - name: JAEGER_SERVICE_ADDR
-          #   value: "jaeger-collector:14268"
-          resources:
-            requests:
-              cpu: 100m
-              memory: 64Mi
-            limits:
-              cpu: 200m
-              memory: 128Mi
-        - name: cache-estimator
-          image: larsson/grpc-caching-estimator
-          ports:
-            - containerPort: 8888
-          env:
-          - name: CHECKOUT_SERVICE_ADDR
-            value: "localhost:5050"
-          - name: PROXY_LISTEN_PORT
-            value: "8888"
-          - name: PROXY_MAX_AGE
-            value: "60"
-        - name: caching-grpc-reverse-proxy
-          image: larsson/caching-grpc-reverse-proxy
-          ports:
-          - containerPort: 1234
-          env:
-          - name: PROXY_LISTEN_PORT
-            value: "1234"
-          - name: PRODUCT_CATALOG_SERVICE_ADDR
             value: "productcatalogservice:3550"
           - name: SHIPPING_SERVICE_ADDR
             value: "shippingservice:50051"
@@ -159,6 +109,15 @@ spec:
             value: "currencyservice:7000"
           - name: CART_SERVICE_ADDR
             value: "cartservice:7070"
+          # - name: JAEGER_SERVICE_ADDR
+          #   value: "jaeger-collector:14268"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
 ---
 apiVersion: v1
 kind: Service
@@ -171,7 +130,7 @@ spec:
   ports:
   - name: grpc
     port: 5050
-    targetPort: 8888
+    targetPort: 5050
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -204,7 +163,7 @@ spec:
         - name: PORT
           value: "8080"
         - name: PRODUCT_CATALOG_SERVICE_ADDR
-          value: "localhost:1234"
+          value: "productcatalogservice:3550"
         - name: ENABLE_PROFILER
           value: "0"
         resources:
@@ -214,26 +173,6 @@ spec:
           limits:
             cpu: 200m
             memory: 450Mi
-      - name: cache-estimator
-        image: larsson/grpc-caching-estimator
-        ports:
-          - containerPort: 8888
-        env:
-        - name: RECOMMENDATION_SERVICE_ADDR
-          value: "localhost:8080"
-        - name: PROXY_LISTEN_PORT
-          value: "8888"
-        - name: PROXY_MAX_AGE
-          value: "60"
-      - name: caching-grpc-reverse-proxy
-        image: larsson/caching-grpc-reverse-proxy
-        ports:
-        - containerPort: 1234
-        env:
-        - name: PROXY_LISTEN_PORT
-          value: "1234"
-        - name: PRODUCT_CATALOG_SERVICE_ADDR
-          value: "productcatalogservice:3550"
 ---
 apiVersion: v1
 kind: Service
@@ -246,7 +185,7 @@ spec:
   ports:
   - name: grpc
     port: 8080
-    targetPort: 8888
+    targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -286,36 +225,6 @@ spec:
           - name: PORT
             value: "8080"
           - name: PRODUCT_CATALOG_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: CURRENCY_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: CART_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: RECOMMENDATION_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: SHIPPING_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: CHECKOUT_SERVICE_ADDR
-            value: "localhost:1234"
-          - name: AD_SERVICE_ADDR
-            value: "localhost:1234"
-          # - name: JAEGER_SERVICE_ADDR
-          #   value: "jaeger-collector:14268"
-          resources:
-            requests:
-              cpu: 100m
-              memory: 64Mi
-            limits:
-              cpu: 200m
-              memory: 128Mi
-        - name: caching-grpc-reverse-proxy
-          image: larsson/caching-grpc-reverse-proxy
-          ports:
-          - containerPort: 1234
-          env:
-          - name: PROXY_LISTEN_PORT
-            value: "1234"
-          - name: PRODUCT_CATALOG_SERVICE_ADDR
             value: "productcatalogservice:3550"
           - name: CURRENCY_SERVICE_ADDR
             value: "currencyservice:7000"
@@ -329,6 +238,15 @@ spec:
             value: "checkoutservice:5050"
           - name: AD_SERVICE_ADDR
             value: "adservice:9555"
+          # - name: JAEGER_SERVICE_ADDR
+          #   value: "jaeger-collector:14268"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
 ---
 apiVersion: v1
 kind: Service
@@ -348,13 +266,12 @@ kind: Service
 metadata:
   name: frontend-external
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: frontend
   ports:
   - name: http
-    nodePort: 32323
-    port: 31313
+    port: 80
     targetPort: 8080
 ---
 apiVersion: apps/v1
@@ -392,17 +309,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-      - name: cache-estimator
-        image: larsson/grpc-caching-estimator
-        ports:
-          - containerPort: 8888
-        env:
-        - name: PAYMENT_SERVICE_ADDR
-          value: "localhost:50051"
-        - name: PROXY_LISTEN_PORT
-          value: "8888"
-        - name: PROXY_MAX_AGE
-          value: "60"
 ---
 apiVersion: v1
 kind: Service
@@ -415,7 +321,7 @@ spec:
   ports:
   - name: grpc
     port: 50051
-    targetPort: 8888
+    targetPort: 50051
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -455,17 +361,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-      - name: cache-estimator
-        image: larsson/grpc-caching-estimator
-        ports:
-          - containerPort: 8888
-        env:
-        - name: PRODUCT_CATALOG_SERVICE_ADDR
-          value: "localhost:3550"
-        - name: PROXY_LISTEN_PORT
-          value: "8888"
-        - name: PROXY_MAX_AGE
-          value: "60"
 ---
 apiVersion: v1
 kind: Service
@@ -478,7 +373,7 @@ spec:
   ports:
   - name: grpc
     port: 3550
-    targetPort: 8888
+    targetPort: 3550
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -522,17 +417,6 @@ spec:
           periodSeconds: 10
           exec:
             command: ["/bin/grpc_health_probe", "-addr=:7070", "-rpc-timeout=5s"]
-      - name: cache-estimator
-        image: larsson/grpc-caching-estimator
-        ports:
-          - containerPort: 8888
-        env:
-        - name: CART_SERVICE_ADDR
-          value: "localhost:7070"
-        - name: PROXY_LISTEN_PORT
-          value: "8888"
-        - name: PROXY_MAX_AGE
-          value: "60"
 ---
 apiVersion: v1
 kind: Service
@@ -545,7 +429,7 @@ spec:
   ports:
   - name: grpc
     port: 7070
-    targetPort: 8888
+    targetPort: 7070
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -581,7 +465,7 @@ spec:
         - name: FRONTEND_ADDR
           value: "frontend:80"
         - name: USERS
-          value: "100"
+          value: "10"
         resources:
           requests:
             cpu: 300m
@@ -626,17 +510,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-      - name: cache-estimator
-        image: larsson/grpc-caching-estimator
-        ports:
-          - containerPort: 8888
-        env:
-        - name: CURRENCY_SERVICE_ADDR
-          value: "localhost:7000"
-        - name: PROXY_LISTEN_PORT
-          value: "8888"
-        - name: PROXY_MAX_AGE
-          value: "60"
 ---
 apiVersion: v1
 kind: Service
@@ -649,7 +522,7 @@ spec:
   ports:
   - name: grpc
     port: 7000
-    targetPort: 8888
+    targetPort: 7000
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -689,17 +562,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-      - name: cache-estimator
-        image: larsson/grpc-caching-estimator
-        ports:
-          - containerPort: 8888
-        env:
-        - name: SHIPPING_SERVICE_ADDR
-          value: "localhost:50051"
-        - name: PROXY_LISTEN_PORT
-          value: "8888"
-        - name: PROXY_MAX_AGE
-          value: "60"
 ---
 apiVersion: v1
 kind: Service
@@ -712,7 +574,7 @@ spec:
   ports:
   - name: grpc
     port: 50051
-    targetPort: 8888
+    targetPort: 50051
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -808,17 +670,6 @@ spec:
           periodSeconds: 15
           exec:
             command: ["/bin/grpc_health_probe", "-addr=:9555"]
-      - name: cache-estimator
-        image: larsson/grpc-caching-estimator
-        ports:
-          - containerPort: 8888
-        env:
-        - name: AD_SERVICE_ADDR
-          value: "localhost:9555"
-        - name: PROXY_LISTEN_PORT
-          value: "8888"
-        - name: PROXY_MAX_AGE
-          value: "60"
 ---
 apiVersion: v1
 kind: Service
@@ -831,5 +682,5 @@ spec:
   ports:
   - name: grpc
     port: 9555
-    targetPort: 8888
+    targetPort: 9555
 ---
