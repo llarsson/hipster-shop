@@ -25,7 +25,7 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
     done
 
     start=$(date +"%s")
-    echo "Starting experiment at ${start} in UTC epoch time"
+    echo "Starting experiment at ${start} in UTC epoch time, that is, $(date) for humans"
     echo "start ${start}" > results/${experiment}-times.txt
 
     echo "Sleeping a minute to not miss load ramp-up period..."
@@ -34,7 +34,6 @@ for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
     echo "Deploying load generator"
     kubectl apply -f ../release/loadgenerator.yaml
 
-    date
     echo "Sleeping for ${duration} seconds"
     sleep ${duration}
 
