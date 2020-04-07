@@ -14,6 +14,11 @@ kubectl delete -f ../release/kubernetes-manifests.yaml &> /dev/null || true
 kubectl delete -f ../release/loadgenerator.yaml &> /dev/null || true
 
 for experiment in static-0 dynamic-adaptive-0.1 dynamic-updaterisk-0.1; do
+    if grep 'end' results/${experiment}-times.txt; then
+        echo "Seems that ${experiment} is already finished, skipping..."
+        continue
+    fi
+
     echo "Will run experiment for ${experiment}"
 
     echo "Deploying Hipster Store"
