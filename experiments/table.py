@@ -61,10 +61,17 @@ def make_table(received_bytes, transmitted_bytes, requests):
 
 
 if __name__=="__main__":
-    results_directory = sys.argv[1]
-    (received_bytes, transmitted_bytes) = parse_directory(results_directory)
-    requests = parse_requests(results_directory)
-    table = make_table(received_bytes, transmitted_bytes, requests)
+    sources = []
+    for results_directory in sys.argv[1:]:
+        (received_bytes, transmitted_bytes) = parse_directory(results_directory)
+        requests = parse_requests(results_directory)
+        table = make_table(received_bytes, transmitted_bytes, requests)
+        sources.append(table)
+
+    table = pd.concat(sources)
+    table = table.groupby(table.index).mean()
+
+    print(table)
 
     with open('hipsterShopCachedRequests.tex', 'w') as f:
         desired_columns=['total_requests', 'cached_requests', 'upstream_requests', 'cache_fraction']
