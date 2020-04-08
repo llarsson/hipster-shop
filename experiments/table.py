@@ -71,8 +71,6 @@ if __name__=="__main__":
     table = pd.concat(sources)
     table = table.groupby(table.index).mean()
 
-    print(table)
-
     with open('hipsterShopCachedRequests.tex', 'w') as f:
         desired_columns=['total_requests', 'cached_requests', 'upstream_requests', 'cache_fraction']
         f.write(table.to_latex(columns=desired_columns, header=[header_aliases[header] for header in desired_columns], float_format="%.2f", escape=False, bold_rows=True,
