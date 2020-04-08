@@ -14,19 +14,24 @@ def plot_network_traffic(received_bytes, transmitted_bytes):
     fig.suptitle('Network traffic (bytes/sec)')
 
     static_ax = ax[0]
-    static_ax.plot(transmitted_bytes['relative_timestamp'], transmitted_bytes['static-0_transmitted_bytes'], color='black', label='Static TTL (0)')
+    static_ax.plot(transmitted_bytes['relative_timestamp'], transmitted_bytes['static-0_transmitted_bytes'], color='black')
 
     adaptive_ax = ax[1]
-    adaptive_ax.plot(transmitted_bytes['relative_timestamp'], transmitted_bytes['dynamic-adaptive-0.1_transmitted_bytes'], color='blue', label='Adaptive TTL (0.1)')
+    adaptive_ax.plot(transmitted_bytes['relative_timestamp'], transmitted_bytes['dynamic-adaptive-0.1_transmitted_bytes'], color='black')
 
     updaterisk_ax = ax[2]
-    updaterisk_ax.plot(transmitted_bytes['relative_timestamp'], transmitted_bytes['dynamic-updaterisk-0.1_transmitted_bytes'], color='orange', label='Update-risk based (0.1)')
+    updaterisk_ax.plot(transmitted_bytes['relative_timestamp'], transmitted_bytes['dynamic-updaterisk-0.1_transmitted_bytes'], color='black')
+
+    static_ax.plot(received_bytes['relative_timestamp'], -received_bytes['static-0_received_bytes'], color='black')
+    adaptive_ax.plot(received_bytes['relative_timestamp'], -received_bytes['dynamic-adaptive-0.1_received_bytes'], color='black')
+    updaterisk_ax.plot(received_bytes['relative_timestamp'], -received_bytes['dynamic-updaterisk-0.1_received_bytes'], color='black')
+
+    static_ax.fill_between(received_bytes['relative_timestamp'], -received_bytes['static-0_received_bytes'], transmitted_bytes['static-0_transmitted_bytes'], facecolor='white', hatch='||', label='Static TTL (0)')
+    adaptive_ax.fill_between(received_bytes['relative_timestamp'], -received_bytes['dynamic-adaptive-0.1_received_bytes'], transmitted_bytes['dynamic-adaptive-0.1_transmitted_bytes'], facecolor='white', hatch='//', label='Adaptive TTL (0.1)')
+    updaterisk_ax.fill_between(received_bytes['relative_timestamp'], -received_bytes['dynamic-updaterisk-0.1_received_bytes'], transmitted_bytes['dynamic-updaterisk-0.1_transmitted_bytes'], facecolor='white', hatch='\\\\', label='Update-risk based (0.1)')
 
     fig.legend()
 
-    static_ax.plot(received_bytes['relative_timestamp'], -received_bytes['static-0_received_bytes'], color='black', label='Static TTL (0)')
-    adaptive_ax.plot(received_bytes['relative_timestamp'], -received_bytes['dynamic-adaptive-0.1_received_bytes'], color='blue', label='Adaptive TTL (0.1)')
-    updaterisk_ax.plot(received_bytes['relative_timestamp'], -received_bytes['dynamic-updaterisk-0.1_received_bytes'], color='orange', label='Update-risk based (0.1)')
     plt.show()
 
 
