@@ -31,6 +31,19 @@ def plot_network_traffic(received_bytes, transmitted_bytes):
 
 
 if __name__=="__main__":
-    results_directory = sys.argv[1]
-    (received_bytes, transmitted_bytes) = parse_directory(results_directory)
+    recv_sources = []
+    xmit_sources = []
+    for results_directory in sys.argv[1:]:
+        (received_bytes, transmitted_bytes) = parse_directory(results_directory)
+        received_bytes.index = pd.to_datetime(received_bytes.index, unit='s')
+        transmitted_bytes.index = pd.to_datetime(transmitted_bytes.index, unit='s')
+        recv_sources.append(received_bytes)
+        xmit_sources.append(transmitted_bytes)
+
+    received_bytes = pd.concat(recv_sources)
+    received_bytes = received_bytes.groupby(received_bytes.index).mean()
+
+    transmitted_bytes = pd.concat(xmit_sources)
+    transmitted_bytes = transmitted_bytes.groupby(transmitted_bytes.index).mean()
+
     plot_network_traffic(received_bytes, transmitted_bytes)
