@@ -34,13 +34,14 @@ def plot_network_traffic_sausages(received_bytes, transmitted_bytes):
 
     fig.legend(ncol=3, bbox_to_anchor=(0.98, 0.95), frameon=False)
 
+
     fig.savefig('hipsterShopNetworkTraffic.pdf', bbox_inches='tight')
 
 
 def plot_network_traffic_sequential_sausages(received_bytes, transmitted_bytes):
     fig, ax = plt.subplots(1, 3, figsize=(6.5, 2), sharex=True, sharey=True, constrained_layout=True)
 
-    fig.suptitle('Network traffic (bytes/sec)')
+    #fig.suptitle('Network traffic (bytes/sec)')
 
     static_ax = ax[0]
     static_ax.plot(transmitted_bytes['relative_timestamp'], transmitted_bytes['static-0_transmitted_bytes'], color='black')
