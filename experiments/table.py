@@ -74,7 +74,7 @@ if __name__=="__main__":
     with open('hipsterShopCachedRequests.tex', 'w') as f:
         desired_columns=['total_requests', 'cached_requests', 'upstream_requests', 'cache_fraction']
         f.write(table.to_latex(columns=desired_columns, header=[header_aliases[header] for header in desired_columns], float_format="%.2f", escape=False, bold_rows=True,
-        caption="Caching of requests in Hipster Shop, as reported by caches installed in components that communicate with others. Note that the number of requests includes both those that could be cached and those that cannot, see Section~\\ref{secHipsterShopCacheability}.", label='tabHipsterShopCachedRequests'))
+        caption="Caching of requests in Hipster Shop, as reported by caches installed in the three components that make inter-service requests over gRPC (see Figure~\\ref{figHipsterShopOverview}). Note that the total number of requests includes both those that could be cached and those that cannot, see Section~\\ref{secHipsterShopCacheable}.", label='tabHipsterShopCachedRequests'))
 
     with open('hipsterShopNetworkTraffic.tex', 'w') as f:
         desired_columns=['total_bytes', 'received_bytes', 'transmitted_bytes', 'reduction']

@@ -67,6 +67,12 @@ def plot_network_traffic_sequential_sausages(received_bytes, transmitted_bytes):
     adaptive_ax.legend(loc='upper center', bbox_to_anchor=(0.45, 1.25), frameon=False)
     updaterisk_ax.legend(loc='upper center', bbox_to_anchor=(0.48, 1.25), frameon=False)
 
+    for axis in ax:
+        axis.grid(True)
+        axis.set_xlabel('time (s)')
+    
+    static_ax.set_ylabel('Network traffic rate (Bps)')
+
     fig.savefig('hipsterShopNetworkTraffic-sequential.pdf', bbox_inches='tight')
 
 
