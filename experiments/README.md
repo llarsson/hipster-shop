@@ -40,6 +40,10 @@ If everything's set up and your `kubectl` default context is that of the minikub
 
 You can plot the data using `./plot.py`, passing in the names of the directories where your results are stored as parameters.
 
+## Cache and Estimator
+
+You can find the code for the Hipster Shop [Cache](https://github.com/llarsson/caching-grpc-reverse-proxy) and [Estimator](https://github.com/llarsson/grpc-caching-estimator) in their respective repos. The names of the projects are out of date and imply far more generality than they should. The [gRPC caching interceptors](https://github.com/llarsson/grpc-caching-interceptors/) are what is general about this proposed software, the Cache and Estimator components themselves are project-specific. However, the code for these components is easy to generate using [our modified Protobuf compiler](https://github.com/llarsson/protobuf) and a future software engineering development task would be to automate generation of Cache and Estimator components from Protobuf service descriptors, so that a service mesh could offer this functionality natively.
+
 ## Data set
 
 The data set from the paper is [in another repo](https://github.com/llarsson/hipster-shop-experiments).
