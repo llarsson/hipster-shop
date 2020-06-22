@@ -33,3 +33,14 @@ If your minikube-running computer is not your main workstation, you can use SSH 
 Now your main computer (laptop?) can access Grafana on its http://localhost:3000/
 
 Do the same for Prometheus if desired.
+
+## Running experiments
+
+If everything's set up and your `kubectl` default context is that of the minikube, you can just start the `./run-experiments.sh` script from within the `experiments/` directory. It uses the modified Kubernetes manifests in the `release/` directory.
+
+You can plot the data using `./plot.py`, passing in the names of the directories where your results are stored as parameters.
+
+## Data set
+
+The data set from the paper is [in another repo](https://github.com/llarsson/hipster-shop-experiments).
+
