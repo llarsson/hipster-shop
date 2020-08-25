@@ -1,6 +1,6 @@
 # Hipster Shop: Cloud-Native Microservices Demo Application
 
-**This repo contains modifications for the paper "Towards soft circuit breaking in service meshes via caching using dynamically estimated TTLs". Head over to the `experiments/` directory and [its README](experiments/README.md).**
+**This repo contains modifications for the paper "Towards soft circuit breaking in service meshes via application-agnostic caching". Head over to the `experiments/` directory and [its README](experiments/README.md).**
 
 **Original README contents follows:**
 
